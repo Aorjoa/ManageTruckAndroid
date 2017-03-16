@@ -1,14 +1,17 @@
 package aorjoa.com.managetruckabdroid;
 
+import android.app.ListActivity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,12 +52,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     public void adapterCall(String ctId,String ctName){
         String[] lists = {""};
         records = dbSqlite.getRecordList(ctId,ctName);
+        setContentView(R.layout.list_records);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, records);
-
+        ListView listView = (ListView) findViewById(R.id.recordsListView);
+        listView.setAdapter(adapter);
     }
 
     public void gotoAddNewRecord(View view){
@@ -65,6 +71,23 @@ public class MainActivity extends AppCompatActivity {
                 dbSqlite.addRecordToDb(createRecord());
             }
         });
+    }
+
+
+    // 2.0 and above
+    @Override
+    public void onBackPressed() {
+        gotoMainMenu(null);
+    }
+
+    // Before 2.0
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            gotoMainMenu(null);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public Record createRecord(){
