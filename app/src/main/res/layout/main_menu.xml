@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/button5"
             android:textSize="20sp"
-            android:layout_weight="0.10" />
+            android:layout_weight="0.10"
+            android:onClick="gotoSearch" />
 
         <Button
             android:text="ชำระเงิน"
