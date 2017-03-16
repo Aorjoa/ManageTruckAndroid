@@ -176,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
         return new Record(ctId,ctName,ctPhone,ctAddress,dateOp,hvName,hvArea,hvPriceArea,hvAddress,bhName,bhHours,bhPriceHours,trName,trNum,trPriceNum,ttName,ttNum,ttPriceNum,price,"admin");
     }
 
+
     public void createAfterAddRecord(){
         EditText edt = null;
         edt = (EditText)findViewById(R.id.ctId);
