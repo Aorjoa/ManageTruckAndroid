@@ -71,7 +71,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/remainPaid"
+            android:id="@+id/remainPaidLbl"
             android:layout_weight="3.42"
             android:text="ค้นหา" />
     </LinearLayout>
@@ -80,7 +80,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_weight="0.16">
+        android:layout_weight="0.66">
 
         <TextView
             android:text="ชำระเพิ่มเติม : "
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:id="@+id/paidMore"
-            android:layout_weight="0.66"
+            android:layout_weight="0.65"
             android:inputType="number|numberDecimal" />
 
 

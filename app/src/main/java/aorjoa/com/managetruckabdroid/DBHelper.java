@@ -166,8 +166,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        String query = "select((sum(price) / count(price)) - sum(pay)) from(select records.recordId, price, pay from records left join transactions on records.recordId = transactions.recordId) where recordId = %s group by recordId";
-        query = String.format(query, "\"%"+recordNo + "%\"");
+        String query = "select((sum(price) / count(price)) - sum(pay)) from (select records.recordId, price, pay from records left join transactions on records.recordId = transactions.recordId) where recordId = %s group by recordId";
+        query = String.format(query, "'"+recordNo + "'");
         Cursor cursor = db.rawQuery(query,null);
         if (cursor != null) {
             cursor.moveToFirst();
