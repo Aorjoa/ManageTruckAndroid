@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                         if (verifyDate(dateop)) {
                             dbSqlite.paidMoreTransaction(lblNowStatus, paidMore, dateop, recorderLogedIn);
                             alertMsg("บันทึกรายการชำระเงินเรียบร้อย");
+                            edt.setText("");
                         }
                     }
                 }catch (Exception e){

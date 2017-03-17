@@ -92,7 +92,7 @@ public class DBHelper extends SQLiteOpenHelper {
         insertCmd.bindString(4, recorder);
         insertCmd.executeInsert();
     }
-    
+
     public List<String> getRecordList(String ctId,String ctName) {
         List<String> records = new ArrayList<String>();
 
