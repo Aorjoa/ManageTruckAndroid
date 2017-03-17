@@ -119,7 +119,8 @@
                     android:inputType="date"
                     android:ems="10"
                     android:id="@+id/dateOp"
-                    android:layout_weight="1.77" />
+                    android:layout_weight="1.77"
+                    android:hint=" เช่น 15/02/2017"/>
 
             </LinearLayout>
 
@@ -453,7 +454,8 @@
                         android:text="ค้างจ่าย"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/paidZero" />
+                        android:id="@+id/paidZero"
+                        android:checked="true" />
 
                     <RadioButton
                         android:text="จ่ายบางส่วน"
@@ -465,6 +467,26 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="กรณีจ่ายบางส่วน"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView10"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number|numberDecimal"
+                    android:ems="10"
+                    android:id="@+id/paidPartPrices"
+                    android:layout_weight="1.59"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"

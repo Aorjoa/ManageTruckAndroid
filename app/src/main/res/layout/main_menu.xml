@@ -22,7 +22,7 @@
             android:text="ค้นหาข้อมูล"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button5"
+            android:id="@+id/searchRecord"
             android:textSize="20sp"
             android:layout_weight="0.10"
             android:onClick="gotoSearch" />
@@ -31,8 +31,9 @@
             android:text="ชำระเงิน"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchRecord"
+            android:id="@+id/paidMore"
             android:textSize="20sp"
-            android:layout_weight="0.10" />
+            android:layout_weight="0.10"
+            android:onClick="gotoPaidMoreTrasaction" />
     </LinearLayout>
 </LinearLayout>

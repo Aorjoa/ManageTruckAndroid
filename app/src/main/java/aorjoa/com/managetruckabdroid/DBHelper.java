@@ -68,6 +68,19 @@ public class DBHelper extends SQLiteOpenHelper {
         insertCmd.executeInsert();
     }
 
+    public void addNewRecordTransaction(String paid,String date,String recorder){
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement insertCmd;
+
+        String strSQL = "insert into transactions (recordId,pay,recordDate,recorder) select recordId,?,?,? from records order by ROWID desc limit 1";
+        insertCmd = db.compileStatement(strSQL);
+        insertCmd.bindString(1, paid);
+        insertCmd.bindString(2, date);
+        insertCmd.bindString(3, recorder);
+        insertCmd.executeInsert();
+    }
+
+
 
     public List<String> getRecordList(String ctId,String ctName) {
         List<String> records = new ArrayList<String>();
@@ -115,5 +128,57 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
 
         return records;
+    }
+
+
+
+    public List<String> getTransaction(String recordNo) {
+        List<String> records = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "select ROWID as เลขที่ชำระเงิน, recordId as เลขที่รายการ, pay as จำนวนเงินที่จ่าย, recordDate as วันที่จ่าย, recorder as คนบันทึก from transactions where recordId like %s";
+        query = String.format(query, "\"%"+recordNo + "%\"");
+        Cursor cursor = db.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+
+            records.add(cursor.getString(0) + " " +
+                    cursor.getString(1) + " " +
+                    cursor.getString(2) + " " +
+                    cursor.getString(3) + " " +
+                    cursor.getString(4) + " "
+            );
+
+            cursor.moveToNext();
+        }
+
+        db.close();
+
+        return records;
+    }
+
+    public String getCostRemain(String recordNo) {
+        String price = "";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "select((sum(price) / count(price)) - sum(pay)) from(select records.recordId, price, pay from records left join transactions on records.recordId = transactions.recordId) where recordId = %s group by recordId";
+        query = String.format(query, "\"%"+recordNo + "%\"");
+        Cursor cursor = db.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        while(!cursor.isAfterLast()) {
+            price = cursor.getString(0);
+            cursor.moveToNext();
+        }
+
+        db.close();
+        return price;
     }
 }

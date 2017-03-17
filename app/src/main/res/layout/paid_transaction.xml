@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:text="เลขที่รายการ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView7" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/recordNo"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="ค้นหา"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchRecordForPaid"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="244dp"
+        android:id="@+id/ListViewPaid" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+
+        <TextView
+            android:text="เลขที่รายการ : "
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView8"
+            android:layout_weight="0.99" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/recordNoLbl"
+            android:layout_weight="3.42"
+            android:text="ค้นหา" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="0.14">
+
+        <TextView
+            android:text="ค้างชำระ : "
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/textView9"
+            android:layout_weight="1.46" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/remainPaid"
+            android:layout_weight="3.42"
+            android:text="ค้นหา" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="0.16">
+
+        <TextView
+            android:text="ชำระเพิ่มเติม : "
+            android:layout_width="wrap_content"
+            android:layout_height="29dp"
+            android:id="@+id/textView11"
+            android:layout_weight="1.46" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/paidMore"
+            android:layout_weight="0.66"
+            android:inputType="number|numberDecimal" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="วันที่ : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView12"
+            android:layout_weight="1.46" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/dateOpForTransaction"
+            android:layout_weight="0.36" />
+
+    </LinearLayout>
+
+    <Button
+        android:text="บันทึกรายการ"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/savePaidMore" />
+</LinearLayout>

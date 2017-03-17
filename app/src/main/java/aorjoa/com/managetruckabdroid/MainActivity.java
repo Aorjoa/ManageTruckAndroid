@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +57,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void gotoPaidMoreTrasaction(View view){
+        setContentView(R.layout.paid_transaction);
+        String[] lists = {""};
+
+        final Button searchRecordForPaid = (Button) findViewById(R.id.searchRecordForPaid);
+        searchRecordForPaid.setOnClickListener(new View.OnClickListener() {
+                                                   public void onClick(View v) {
+                                                       EditText edt = null;
+                                                       edt = (EditText)findViewById(R.id.recordNo);
+                                                       String recordNo = edt.getText().toString();
+                                                       adapterForPaidMore(recordNo);
+
+                                                   }
+                                               });
+    }
+
+    public void adapterForPaidMore(String recordNo){
+        records = dbSqlite.getTransaction(recordNo);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, records);
+        ListView listView = (ListView) findViewById(R.id.ListViewPaid);
+        if (adapter.getCount() > 0) {
+            listView.setAdapter(adapter);
+        }
+    }
 
     public void adapterCall(String ctId,String ctName){
         String[] lists = {""};
@@ -70,22 +98,7 @@ public class MainActivity extends AppCompatActivity {
         final Button calPrice = (Button) findViewById(R.id.calPrice);
         calPrice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                try {
-                    Record record = createRecord();
-                    Double hvArea = Double.parseDouble(record.getHvArea());
-                    Double hvAreaPrice = Double.parseDouble(record.getHvPriceArea());
-                    Double bhHour = Double.parseDouble(record.getBhHours());
-                    Double bhPriceHour = Double.parseDouble(record.getBhPriceHours());
-                    Double trNum = Double.parseDouble(record.getTrNum());
-                    Double trPriceNum = Double.parseDouble(record.getTrPriceNum());
-                    Double ttNum = Double.parseDouble(record.getTtNum());
-                    Double ttPriceNum = Double.parseDouble(record.getTtPriceNum());
-                    EditText edt = (EditText)findViewById(R.id.prices);
-                    edt.setText(""+(hvArea*hvAreaPrice + bhHour*bhPriceHour + trNum*trPriceNum + ttNum*ttPriceNum));
-
-                }catch (Exception e){
-                    alertMsg("กรุณากรอบข้อมูลให้ถูกต้อง");
-                }
+               calculatePriceAllInput();
             }
         });
         final Button saveAddRecord = (Button) findViewById(R.id.saveAddRecord);
@@ -93,13 +106,56 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try {
                     dbSqlite.addRecordToDb(createRecord());
-                    alertMsg("บันทึกข้อมูลเรียบร้อยแล้ว");
-                    createAfterAddRecord();
+                    RadioButton paidFull = (RadioButton) findViewById(R.id.paidFull);
+                    RadioButton paidPart = (RadioButton) findViewById(R.id.paidPart);
+                    EditText dateopEdt = (EditText) findViewById(R.id.dateOp);
+                    String dateOp = dateopEdt.getText().toString();
+                    if(verifyDate(dateOp)) {
+                        calculatePriceAllInput();
+                        if (paidFull.isChecked()) {
+                            EditText edt = (EditText) findViewById(R.id.prices);
+                            dbSqlite.addNewRecordTransaction(edt.getText().toString(), dateOp, "admin");
+                        } else if (paidPart.isChecked()) {
+                            EditText edt = (EditText) findViewById(R.id.paidPartPrices);
+                            dbSqlite.addNewRecordTransaction(edt.getText().toString(), dateOp, "admin");
+                        } else {
+                            dbSqlite.addNewRecordTransaction("0", dateOp, "admin");
+                        }
+                        alertMsg("บันทึกข้อมูลเรียบร้อยแล้ว");
+                        createAfterAddRecord();
+                    }
                 }catch (Exception e){
                     alertMsg("พบข้อผิดพลาด กรุณาตรวจสอบข้อมูลให้ถูกต้อง");
                 }
             }
         });
+    }
+
+    private boolean verifyDate(String input){
+        boolean checkFormat = false;
+        if (input.matches("([0-9]{2})/([0-9]{2})/([0-9]{4})"))
+            checkFormat=true;
+        else
+            alertMsg("ตรวจสอบวันที่ให้ถูกต้อง");
+        return checkFormat;
+    }
+
+    private void calculatePriceAllInput() {
+        try {
+            Record record = createRecord();
+            Double hvArea = Double.parseDouble(record.getHvArea());
+            Double hvAreaPrice = Double.parseDouble(record.getHvPriceArea());
+            Double bhHour = Double.parseDouble(record.getBhHours());
+            Double bhPriceHour = Double.parseDouble(record.getBhPriceHours());
+            Double trNum = Double.parseDouble(record.getTrNum());
+            Double trPriceNum = Double.parseDouble(record.getTrPriceNum());
+            Double ttNum = Double.parseDouble(record.getTtNum());
+            Double ttPriceNum = Double.parseDouble(record.getTtPriceNum());
+            EditText edt = (EditText)findViewById(R.id.prices);
+            edt.setText(""+(hvArea*hvAreaPrice + bhHour*bhPriceHour + trNum*trPriceNum + ttNum*ttPriceNum));
+        }catch (Exception e){
+            alertMsg("กรุณากรอบข้อมูลให้ถูกต้อง");
+        }
     }
 
     public void alertMsg(String msg){
@@ -216,6 +272,8 @@ public class MainActivity extends AppCompatActivity {
         edt = (EditText)findViewById(R.id.ttPriceNum);
         edt.setText("");
         edt = (EditText)findViewById(R.id.prices);
+        edt.setText("");
+        edt = (EditText)findViewById(R.id.paidPartPrices);
         edt.setText("");
     }
 }
