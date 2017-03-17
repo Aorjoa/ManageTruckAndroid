@@ -41,7 +41,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoMainMenu(View view){
-        setContentView(R.layout.main_menu);
+        try {
+            EditText edt = (EditText) findViewById(R.id.usernameInput);
+            String username = edt.getText().toString();
+            edt = (EditText) findViewById(R.id.passwordInput);
+            String password = edt.getText().toString();
+            if (dbSqlite.checkLogin(username, password)) {
+                setContentView(R.layout.main_menu);
+            } else {
+                alertMsg("ไม่สามารถ Login ได้!");
+            }
+        }catch (Exception e){
+
+        }
     }
 
     public void gotoSearch(View view){

@@ -11,6 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +38,39 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public static String MD5_Hash(String s) {
+        MessageDigest m = null;
+
+        try {
+            m = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        m.update(s.getBytes(),0,s.length());
+        String hash = String.format("%032x", new BigInteger(1, m.digest()));
+        return hash;
+    }
+
+    public boolean checkLogin(String UsernameInput,String passwordInput){
+        SQLiteDatabase db = this.getWritableDatabase();
+        boolean logedInValid = false;
+        String password =MD5_Hash(passwordInput).toUpperCase();
+        String query = "select * from members where mbUsername=%s and mbPassword=%s";
+        query = String.format(query, "\'"+UsernameInput + "\'","\'"+password + "\'");
+        Cursor cursor = db.rawQuery(query,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+            while(!cursor.isAfterLast()) {
+                cursor.getString(0);
+                logedInValid = true;
+                cursor.moveToNext();
+            }
+        return logedInValid;
     }
 
     public void addRecordToDb(Record data){
