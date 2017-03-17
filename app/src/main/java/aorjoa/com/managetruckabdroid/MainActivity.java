@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Button login;
     DBHelper dbSqlite;
     List<String> records;
+    String recorderLogedIn = "admin";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +70,29 @@ public class MainActivity extends AppCompatActivity {
                                                        edt = (EditText)findViewById(R.id.recordNo);
                                                        String recordNo = edt.getText().toString();
                                                        adapterForPaidMore(recordNo);
-
                                                    }
                                                });
+        final Button savePaidMore = (Button) findViewById(R.id.savePaidMore);
+        savePaidMore.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    TextView recordNotLbl = (TextView) findViewById(R.id.recordNoLbl);
+                    String lblNowStatus = recordNotLbl.getText().toString();
+                    if (!lblNowStatus.equals("ค้นหา") || !lblNowStatus.equals("") || !lblNowStatus.equals(" ")) {
+                        EditText edt = (EditText) findViewById(R.id.paidMore);
+                        String paidMore = edt.getText().toString();
+                        TextView txtDate = (TextView) findViewById(R.id.dateOpForTransaction);
+                        String dateop = txtDate.getText().toString();
+                        if (verifyDate(dateop)) {
+                            dbSqlite.paidMoreTransaction(lblNowStatus, paidMore, dateop, recorderLogedIn);
+                            alertMsg("บันทึกรายการชำระเงินเรียบร้อย");
+                        }
+                    }
+                }catch (Exception e){
+                alertMsg("พบข้อผิดพลาด กรุณาตรวจสอบข้อมูลให้ถูกต้อง");
+            }
+            }
+        });
     }
 
     public void adapterForPaidMore(String recordNo){
@@ -125,12 +146,12 @@ public class MainActivity extends AppCompatActivity {
 
                         if (paidFull.isChecked()) {
                             EditText edt = (EditText) findViewById(R.id.prices);
-                            dbSqlite.addNewRecordTransaction(edt.getText().toString(), dateOp, "admin");
+                            dbSqlite.addNewRecordTransaction(edt.getText().toString(), dateOp, recorderLogedIn);
                         } else if (paidPart.isChecked()) {
                             EditText edt = (EditText) findViewById(R.id.paidPartPrices);
-                            dbSqlite.addNewRecordTransaction(edt.getText().toString(), dateOp, "admin");
+                            dbSqlite.addNewRecordTransaction(edt.getText().toString(), dateOp, recorderLogedIn);
                         } else {
-                            dbSqlite.addNewRecordTransaction("0", dateOp, "admin");
+                            dbSqlite.addNewRecordTransaction("0", dateOp, recorderLogedIn);
                         }
 
                         alertMsg("บันทึกข้อมูลเรียบร้อยแล้ว");

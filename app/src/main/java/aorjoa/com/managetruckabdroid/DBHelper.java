@@ -80,8 +80,19 @@ public class DBHelper extends SQLiteOpenHelper {
         insertCmd.executeInsert();
     }
 
+    public void paidMoreTransaction(String record,String paid,String date,String recorder){
+        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteStatement insertCmd;
 
-
+        String strSQL = "insert into transactions (recordId,pay,recordDate,recorder) select ?,?,?,? from records order by ROWID desc limit 1";
+        insertCmd = db.compileStatement(strSQL);
+        insertCmd.bindString(1, record);
+        insertCmd.bindString(2, paid);
+        insertCmd.bindString(3, date);
+        insertCmd.bindString(4, recorder);
+        insertCmd.executeInsert();
+    }
+    
     public List<String> getRecordList(String ctId,String ctName) {
         List<String> records = new ArrayList<String>();
 

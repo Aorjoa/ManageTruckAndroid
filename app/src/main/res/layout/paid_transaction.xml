@@ -118,7 +118,8 @@
             android:inputType="date"
             android:ems="10"
             android:id="@+id/dateOpForTransaction"
-            android:layout_weight="0.36" />
+            android:layout_weight="0.36"
+            android:hint=" เช่น 15/02/2017"/>
 
     </LinearLayout>
 
