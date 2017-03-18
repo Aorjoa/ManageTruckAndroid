@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void exitApp(View view){
+        System.exit(0);
+    }
+
     public void gotoPaidMoreTrasaction(View view){
         setContentView(R.layout.paid_transaction);
         String[] lists = {""};
