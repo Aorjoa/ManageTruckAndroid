@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createRecordTable);
         String addFirstRowForTest = "insert into records (recordId) select ('') where not exists (select * from records)";
         db.execSQL(addFirstRowForTest);
-        String createTableTransaction = "create table if not exists transactions (recordId text, pay int, recordDate text, recorder text)";
+        String createTableTransaction = "create table if not exists transactions (recordId text,checkSync int, pay int, recordDate text, recorder text)";
         db.execSQL(createTableTransaction);
         String createTableMember = "create table if not exists members (mbUsername text, mbName text, mbPassword text, unique (mbUsername))";
         db.execSQL(createTableMember);
@@ -108,7 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteStatement insertCmd;
 
-        String strSQL = "insert into transactions (recordId,pay,recordDate,recorder) select recordId,?,?,? from records order by ROWID desc limit 1";
+        String strSQL = "insert into transactions (recordId,checkSync,pay,recordDate,recorder) select recordId,0,?,?,? from records order by ROWID desc limit 1";
         insertCmd = db.compileStatement(strSQL);
         insertCmd.bindString(1, paid);
         insertCmd.bindString(2, date);
@@ -120,7 +120,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         SQLiteStatement insertCmd;
 
-        String strSQL = "insert into transactions (recordId,pay,recordDate,recorder) select ?,?,?,? from records order by ROWID desc limit 1";
+        String strSQL = "insert into transactions (recordId,checkSync,pay,recordDate,recorder) select ?,0,?,?,? from records order by ROWID desc limit 1";
         insertCmd = db.compileStatement(strSQL);
         insertCmd.bindString(1, record);
         insertCmd.bindString(2, paid);

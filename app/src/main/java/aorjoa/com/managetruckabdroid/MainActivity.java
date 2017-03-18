@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private Button login;
     DBHelper dbSqlite;
     List<String> records;
-    String recorderLogedIn = "admin";
+    String recorderLogedIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoMainMenu(View view){
-        try {
             EditText edt = (EditText) findViewById(R.id.usernameInput);
             String username = edt.getText().toString();
             edt = (EditText) findViewById(R.id.passwordInput);
@@ -52,9 +51,14 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 alertMsg("ไม่สามารถ Login ได้!");
             }
-        }catch (Exception e){
+    }
 
-        }
+    public void checkGoToMainMenu(View view) {
+            if(recorderLogedIn == null){
+                setContentView(R.layout.activity_main);
+            }else{
+                setContentView(R.layout.main_menu);
+            }
     }
 
     public void gotoSearch(View view){
@@ -224,15 +228,16 @@ public class MainActivity extends AppCompatActivity {
 
     // 2.0 and above
     @Override
-    public void onBackPressed() {
-        gotoMainMenu(null);
+    public void onBackPressed()
+    {
+        checkGoToMainMenu(null);
     }
 
     // Before 2.0
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            gotoMainMenu(null);
+            checkGoToMainMenu(null);
             return true;
         }
         return super.onKeyDown(keyCode, event);
