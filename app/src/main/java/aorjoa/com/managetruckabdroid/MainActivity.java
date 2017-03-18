@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             String username = edt.getText().toString();
             edt = (EditText) findViewById(R.id.passwordInput);
             String password = edt.getText().toString();
-            if (dbSqlite.checkLogin(username, password)) {
+            recorderLogedIn = dbSqlite.checkLogin(username, password);
+            if (recorderLogedIn != null) {
                 setContentView(R.layout.main_menu);
             } else {
                 alertMsg("ไม่สามารถ Login ได้!");

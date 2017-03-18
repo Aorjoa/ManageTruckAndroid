@@ -54,9 +54,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return hash;
     }
 
-    public boolean checkLogin(String UsernameInput,String passwordInput){
+
+    public String checkLogin(String UsernameInput,String passwordInput){
         SQLiteDatabase db = this.getWritableDatabase();
-        boolean logedInValid = false;
+        String recorderLogedIn = null;
         String password =MD5_Hash(passwordInput).toUpperCase();
         String query = "select * from members where mbUsername=%s and mbPassword=%s";
         query = String.format(query, "\'"+UsernameInput + "\'","\'"+password + "\'");
@@ -66,11 +67,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
             while(!cursor.isAfterLast()) {
-                cursor.getString(0);
-                logedInValid = true;
+                recorderLogedIn = cursor.getString(0);
                 cursor.moveToNext();
             }
-        return logedInValid;
+        return recorderLogedIn;
     }
 
     public void addRecordToDb(Record data){
